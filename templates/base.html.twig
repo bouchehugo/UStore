@@ -1,17 +1,129 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}UrbanFit{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('css/header.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
+    
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{{ asset('favicon.png') }}">
+    
+    <style>
+        main {
+            min-height: calc(100vh - 100px - 200px);
+            padding: 20px;
+        }
+        
+        .page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .page-container h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .page-container p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+    </style>
+    
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+<header class="header-container">
+    <div class="logo-container">
+        <a href="{{ path('accueil') }}">
+            <img src="{{ asset('images/logo_ustore_r.png') }}" alt="UrbanFit" class="header-logo">
+        </a>
+    </div>
+
+    <form class="search-container" method="get" action="{{ path('produit') }}">
+        <input type="text" name="q" placeholder="Rechercher..." class="search-input">
+        <button type="submit" class="search-button">🔍</button>
+    </form>
+
+    <div class="nav-right-container">
+        <a href="{{ path('categorie') }}" class="nav-button button-categories">Catégories</a>
+        <a href="{{ path('promotion') }}" class="nav-button button-promotions">Promotions</a>
+        <a href="{{ path('connexion') }}" class="nav-button button-login">Se connecter</a>
+        <a href="{{ path('inscription') }}" class="nav-button button-signup">S'inscrire</a>
+    </div>
+</header>
+
+<main>
+    {% block body %}{% endblock %}
+</main>
+
+<footer class="footer-bar-container">
+    <div class="footer-content">
+        <div class="partenaires-section">
+            <div class="partenaires-title">Nos Partenaires</div>
+            <div class="partenaires-logos">
+                <img src="{{ asset('images/partenaires/partner1.png') }}" alt="Partenaire 1" class="partenaire-logo" onerror="this.style.display='none'">
+                <img src="{{ asset('images/partenaires/partner2.png') }}" alt="Partenaire 2" class="partenaire-logo" onerror="this.style.display='none'">
+                <img src="{{ asset('images/partenaires/partner3.png') }}" alt="Partenaire 3" class="partenaire-logo" onerror="this.style.display='none'">
+                <img src="{{ asset('images/partenaires/partner4.png') }}" alt="Partenaire 4" class="partenaire-logo" onerror="this.style.display='none'">
+                <img src="{{ asset('images/partenaires/partner5.png') }}" alt="Partenaire 5" class="partenaire-logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="copyright">
+                © 2026 UrbanFit. Tous droits réservés.
+            </div>
+            <div class="footer-links">
+                <a href="{{ path('aide') }}" class="footer-link">Aide</a>
+                <a href="{{ path('service_client') }}" class="footer-link">Service Clients</a>
+                <a href="{{ path('newsletter') }}" class="footer-link">Newsletter</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<button class="fixed-back-top-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+    ↑
+</button>
+
+<button class="fixed-cart-btn" onclick="window.location.href='{{ path('panier') }}'">
+    🛒
+    <span class="cart-count">0</span>
+</button>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cartCount = document.querySelector('.cart-count');
+        const cartItems = localStorage.getItem('cartItems') || '0';
+        cartCount.textContent = cartItems;
+        
+        window.addEventListener('scroll', function() {
+            const backBtn = document.querySelector('.fixed-back-top-btn');
+            if (window.scrollY > 300) {
+                backBtn.style.opacity = '1';
+                backBtn.style.visibility = 'visible';
+            } else {
+                backBtn.style.opacity = '0';
+                backBtn.style.visibility = 'hidden';
+            }
+        });
+        
+        document.querySelector('.btn-add-to-cart')?.addEventListener('click', function() {
+            let count = parseInt(cartCount.textContent);
+            count++;
+            cartCount.textContent = count;
+            localStorage.setItem('cartItems', count);
+        });
+    });
+</script>
+
+{% block javascripts %}{% endblock %}
+</body>
 </html>

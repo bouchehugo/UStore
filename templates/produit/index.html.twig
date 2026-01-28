@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produits - UrbanFit{% endblock %}
+
+{% block body %}
+<div class="produit-container">
+    <h1>Liste des Produits</h1>
+    
+    {% if app.request.query.get('q') %}
+        <p>Résultats de recherche pour : "{{ app.request.query.get('q') }}"</p>
+    {% endif %}
+    
+    <div class="produits-list">
+        <p>Page des produits</p>
+    </div>
+</div>
+
+<style>
+    .produit-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    
+    .produits-list {
+        margin-top: 30px;
+    }
+</style>
+{% endblock %}

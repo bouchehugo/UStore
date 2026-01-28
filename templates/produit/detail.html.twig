@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produit - UrbanFit{% endblock %}
+
+{% block body %}
+<div class="produit-detail-container">
+    <h1>Détail du Produit</h1>
+    <p>Page détail pour le produit ID: {{ id }}</p>
+</div>
+
+<style>
+    .produit-detail-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+</style>
+{% endblock %}

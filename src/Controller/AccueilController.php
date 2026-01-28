@@ -6,16 +6,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class HomeController extends AbstractController
+final class AccueilController extends AbstractController
 {
-    #[Route('/', name: 'home')]
+    #[Route('/', name: 'accueil')]
     public function index(): Response
     {
         // On passe des variables à Twig
-        return $this->render('home/index.html.twig', [
+        return $this->render('accueil/index.html.twig', [
             'title' => 'UrbanFit',
             'welcome_message' => 'Bienvenue sur UrbanFit 💪',
             'description' => 'Votre site pour rester en forme et suivre vos entraînements !',
         ]);
     }
+
 }
