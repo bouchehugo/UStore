@@ -1,0 +1,120 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panier{% endblock %}
+
+{% block body %}
+<div class="panier-container">
+    <h1>Votre panier</h1>
+
+    {% for type, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-message flash-{{ type }}">{{ message }}</div>
+        {% endfor %}
+    {% endfor %}
+
+    {% if items is empty %}
+        <p class="empty-text">Votre panier est vide.</p>
+    {% else %}
+        <div class="panier-list">
+            {% for item in items %}
+                <div class="panier-item">
+                    <img src="{{ asset(item.image) }}" alt="{{ item.name }}">
+                    <div class="panier-details">
+                        <h3>{{ item.name }}</h3>
+                        <p>Quantite: {{ item.quantity }}</p>
+                        <p>Prix unitaire: {{ item.price|number_format(2, ',', ' ') }} €</p>
+                    </div>
+                    <div class="panier-line-total">
+                        {{ (item.price * item.quantity)|number_format(2, ',', ' ') }} €
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="panier-summary">
+            <p><strong>Articles:</strong> {{ total_quantity }}</p>
+            <p><strong>Total:</strong> {{ total|number_format(2, ',', ' ') }} €</p>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    .panier-container {
+        max-width: 1050px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .panier-container h1 {
+        margin: 0 0 18px;
+        color: #111827;
+    }
+
+    .empty-text {
+        color: #6b7280;
+    }
+
+    .panier-list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .panier-item {
+        display: grid;
+        grid-template-columns: 100px 1fr auto;
+        gap: 14px;
+        align-items: center;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 12px;
+        background: #fff;
+    }
+
+    .panier-item img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 10px;
+        background: #f3f4f6;
+    }
+
+    .panier-details h3 {
+        margin: 0 0 6px;
+    }
+
+    .panier-details p {
+        margin: 0 0 4px;
+        color: #4b5563;
+    }
+
+    .panier-line-total {
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .panier-summary {
+        margin-top: 18px;
+        text-align: right;
+        font-size: 1.05rem;
+    }
+
+    .flash-message {
+        margin-bottom: 12px;
+        padding: 10px 12px;
+        border-radius: 8px;
+    }
+
+    .flash-success {
+        background-color: #ecfdf3;
+        border: 1px solid #22c55e33;
+        color: #166534;
+    }
+
+    .flash-error {
+        background-color: #fef2f2;
+        border: 1px solid #ef444433;
+        color: #991b1b;
+    }
+</style>
+{% endblock %}

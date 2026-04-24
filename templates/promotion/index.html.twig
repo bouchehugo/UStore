@@ -1,0 +1,143 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Promotion{% endblock %}
+
+{% block body %}
+<div class="promo-container">
+    <div class="section-header">
+        <h1>Promotions du moment</h1>
+        <p>Profite des meilleures remises sur une selection de produits UrbanFit.</p>
+    </div>
+
+    {% if promotions is not empty %}
+        <div class="promo-grid">
+            {% for product in promotions %}
+                <div class="promo-card">
+                    <span class="promo-badge">{{ product.badge }}</span>
+                    <h2>{{ product.name }}</h2>
+                    <p class="discount">-{{ product.discount }}%</p>
+                    <p class="price-line">
+                        <span class="old-price">{{ product.old_price|number_format(2, ',', ' ') }} €</span>
+                        <span class="new-price">{{ product.new_price|number_format(2, ',', ' ') }} €</span>
+                    </p>
+                    <a href="{{ path('produit_detail', {id: product.id}) }}" class="promo-link">
+                        Commander ce produit
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="empty-message">Aucune promotion disponible, ajoute des articles en base.</p>
+    {% endif %}
+</div>
+
+<style>
+    .promo-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 34px;
+    }
+
+    .section-header h1 {
+        margin: 0 0 10px;
+        font-size: 2.2rem;
+        color: #111827;
+    }
+
+    .section-header p {
+        margin: 0;
+        color: #6b7280;
+    }
+
+    .promo-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+    .promo-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 18px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .promo-badge {
+        align-self: flex-start;
+        background: #fee2e2;
+        color: #991b1b;
+        font-size: 0.78rem;
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-weight: 700;
+    }
+
+    .promo-card h2 {
+        margin: 0;
+        font-size: 1.08rem;
+        color: #1f2937;
+    }
+
+    .discount {
+        margin: 0;
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: #dc2626;
+    }
+
+    .price-line {
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .old-price {
+        text-decoration: line-through;
+        color: #9ca3af;
+        font-size: 0.95rem;
+    }
+
+    .new-price {
+        color: #0f172a;
+        font-weight: 700;
+    }
+
+    .promo-link {
+        margin-top: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        color: #111827;
+    }
+
+    .promo-link:hover {
+        text-decoration: underline;
+    }
+
+    .empty-message {
+        text-align: center;
+        color: #6b7280;
+    }
+
+    @media (max-width: 950px) {
+        .promo-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    @media (max-width: 680px) {
+        .promo-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}

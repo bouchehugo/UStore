@@ -1,0 +1,151 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produit - UrbanFit{% endblock %}
+
+{% block body %}
+<div class="produit-detail-container">
+    {% for type, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-message flash-{{ type }}">{{ message }}</div>
+        {% endfor %}
+    {% endfor %}
+
+    <div class="product-layout">
+        <div class="product-image">
+            <img src="{{ asset(product.image) }}" alt="{{ product.name }}">
+        </div>
+        <div class="product-info">
+            <p class="product-category">{{ product.category }}</p>
+            <h1>{{ product.name }}</h1>
+            <p class="product-reference">Ref: {{ product.reference }}</p>
+            <p class="product-price">{{ product.price|number_format(2, ',', ' ') }} €</p>
+            <p class="product-stock">
+                {% if product.stock > 0 %}
+                    En stock: {{ product.stock }}
+                {% else %}
+                    Rupture de stock
+                {% endif %}
+            </p>
+
+            <form method="post" action="{{ path('produit_detail', {id: product.id}) }}" class="order-form">
+                <label for="quantity">Quantite</label>
+                <input type="number" id="quantity" name="quantity" min="1" value="1" {% if product.stock > 0 %}max="{{ product.stock }}"{% endif %} required>
+                <button type="submit" {% if product.stock <= 0 %}disabled{% endif %}>
+                    Commander
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .produit-detail-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .product-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+        align-items: start;
+    }
+
+    .product-image {
+        background: #f3f4f6;
+        border-radius: 12px;
+        overflow: hidden;
+        min-height: 320px;
+    }
+
+    .product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .product-category {
+        margin: 0 0 8px;
+        color: #6b7280;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+    }
+
+    .product-info h1 {
+        margin: 0 0 10px;
+        color: #111827;
+    }
+
+    .product-reference {
+        margin: 0 0 8px;
+        color: #6b7280;
+    }
+
+    .product-price {
+        margin: 0 0 10px;
+        font-size: 1.55rem;
+        font-weight: 800;
+        color: #0f172a;
+    }
+
+    .product-stock {
+        margin: 0 0 20px;
+        color: #374151;
+    }
+
+    .order-form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-width: 220px;
+    }
+
+    .order-form input {
+        padding: 9px 10px;
+        border-radius: 8px;
+        border: 1px solid #d1d5db;
+    }
+
+    .order-form button {
+        border: none;
+        border-radius: 999px;
+        padding: 10px 14px;
+        font-weight: 700;
+        color: #fff;
+        background: #111827;
+        cursor: pointer;
+    }
+
+    .order-form button:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
+    .flash-message {
+        margin-bottom: 14px;
+        padding: 10px 12px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+    }
+
+    .flash-success {
+        background-color: #ecfdf3;
+        border: 1px solid #22c55e33;
+        color: #166534;
+    }
+
+    .flash-error {
+        background-color: #fef2f2;
+        border: 1px solid #ef444433;
+        color: #991b1b;
+    }
+
+    @media (max-width: 900px) {
+        .product-layout {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}

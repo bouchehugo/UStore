@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}UrbanFit{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('css/header.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
+    
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{{ asset('favicon.png') }}">
+    
+    <style>
+        .user-connected-banner {
+            background: #ecfdf3;
+            border-bottom: 1px solid #22c55e33;
+            color: #166534;
+            text-align: center;
+            font-weight: 600;
+            padding: 8px 12px;
+        }
+
+        main {
+            min-height: calc(100vh - 100px - 200px);
+            padding: 20px;
+        }
+        
+        .page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .page-container h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .page-container p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+    </style>
+    
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+{% if app.session.get('user_name') %}
+    <div class="user-connected-banner">
+        Connecte en tant que {{ app.session.get('user_name') }}
+    </div>
+{% endif %}
+
+<header class="header-container">
+    <div class="logo-container">
+        <a href="{{ path('accueil') }}">
+            <img src="{{ asset('images/logo_ustore_r.png') }}" alt="UrbanFit" class="header-logo">
+        </a>
+    </div>
+
+    <form class="search-container" method="get" action="{{ path('produit') }}">
+        <input type="text" name="q" placeholder="Rechercher..." class="search-input">
+        <button type="submit" class="search-button">🔍</button>
+    </form>
+
+    <div class="nav-right-container">
+        <a href="{{ path('categorie') }}" class="nav-button button-categories">Catégories</a>
+        <a href="{{ path('promotion') }}" class="nav-button button-promotions">Promotions</a>
+        {% if not app.session.get('user_id') %}
+            <a href="{{ path('connexion') }}" class="nav-button button-login">Se connecter</a>
+            <a href="{{ path('inscription') }}" class="nav-button button-signup">S'inscrire</a>
+        {% endif %}
+    </div>
+</header>
+
+<main>
+    {% block body %}{% endblock %}
+</main>
+
+<footer class="footer-bar-container">
+    <div class="footer-content">
+        <div class="partenaires-section">
+            <div class="partenaires-title">Nos Partenaires</div>
+            <div class="partenaires-logos">
+                <img src="{{ asset('images/partenaires/partner1.png') }}" alt="Partenaire 1" class="partenaire-logo" onerror="this.style.display='none'">
+                <img src="{{ asset('images/partenaires/partner2.png') }}" alt="Partenaire 2" class="partenaire-logo" onerror="this.style.display='none'">
+                <img src="{{ asset('images/partenaires/partner3.png') }}" alt="Partenaire 3" class="partenaire-logo" onerror="this.style.display='none'">
+                <img src="{{ asset('images/partenaires/partner4.png') }}" alt="Partenaire 4" class="partenaire-logo" onerror="this.style.display='none'">
+                <img src="{{ asset('images/partenaires/partner5.png') }}" alt="Partenaire 5" class="partenaire-logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="copyright">
+                © 2026 UrbanFit. Tous droits réservés.
+            </div>
+            <div class="footer-links">
+                <a href="{{ path('aide') }}" class="footer-link">Aide</a>
+                <a href="{{ path('service_client') }}" class="footer-link">Service Clients</a>
+                <a href="{{ path('newsletter') }}" class="footer-link">Newsletter</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<button class="fixed-back-top-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+    ↑
+</button>
+
+{% set cart_items = app.session.get('cart', []) %}
+{% set cart_count = 0 %}
+{% for item in cart_items %}
+    {% set cart_count = cart_count + item.quantity %}
+{% endfor %}
+
+<button class="fixed-cart-btn" onclick="window.location.href='{{ path('panier') }}'">
+    🛒
+    <span class="cart-count">{{ cart_count }}</span>
+</button>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        window.addEventListener('scroll', function() {
+            const backBtn = document.querySelector('.fixed-back-top-btn');
+            if (window.scrollY > 300) {
+                backBtn.style.opacity = '1';
+                backBtn.style.visibility = 'visible';
+            } else {
+                backBtn.style.opacity = '0';
+                backBtn.style.visibility = 'hidden';
+            }
+        });
+    });
+</script>
+
+{% block javascripts %}{% endblock %}
+</body>
+</html>
